@@ -102,6 +102,7 @@ public class Pairing extends AppCompatActivity {
         }
 
         public void run() {
+            Log.d("Client", "run()");
 
             // Always cancel discovery because it will slow down a connection
             BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -139,6 +140,7 @@ public class Pairing extends AppCompatActivity {
 
 
         private void connected(BluetoothSocket socket) {
+            Log.d("Client", "connected()");
             /*try {
                 is = socket.getInputStream();
 
@@ -153,7 +155,7 @@ public class Pairing extends AppCompatActivity {
                 String rootDir = Environment.getExternalStorageDirectory()
                         + File.separator + "Video";
                 File rootFile = new File(rootDir);
-                //rootFile.mkdir();
+//                rootFile.mkdir();
 
 
                 File localFile = new File(rootFile, OUTPUT_FILE_NAME);
@@ -171,6 +173,7 @@ public class Pairing extends AppCompatActivity {
                 //Log.d("DEBUG: ", convertStreamToString(is));
 
                 copyInputStreamToFile(is, localFile);
+                Log.d("Client", "Download finished");
                 //fos.close();
 
 
