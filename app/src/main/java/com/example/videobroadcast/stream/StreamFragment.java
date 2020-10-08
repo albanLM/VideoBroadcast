@@ -95,7 +95,10 @@ public class StreamFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentStreamBinding.inflate(inflater, container, false);
 
-//        getActivity().requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 1);
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 
@@ -104,7 +107,7 @@ public class StreamFragment extends Fragment {
         discoveredList = new ArrayList<>();
         pairedList = new ArrayList<>();
 
-        getActivity().setResult(Activity.RESULT_CANCELED);
+//        getActivity().setResult(Activity.RESULT_CANCELED);
 
         Button scanButton = binding.buttonScan;
         scanButton.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +130,7 @@ public class StreamFragment extends Fragment {
         newDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        getActivity().registerReceiver(receiver, filter);
+        getContext().registerReceiver(receiver, filter);
         //filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         //this.registerReceiver(receiver, filter);
 
