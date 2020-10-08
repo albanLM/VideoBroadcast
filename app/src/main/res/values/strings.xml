@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Video Broadcast</string>
+    <string name="tab_download">Download</string>
+    <string name="tab_broadcast">Broadcast</string>
+    <string name="tab_stream">Stream</string>
+    <string name="fab_add_video">Add Video</string>
+    <string name="video_directory">video_downloads</string>
+    <string name="download">Download</string>
+    <string name="cancel">Cancel</string>
+</resources>
