@@ -1,25 +1,14 @@
 package com.example.videobroadcast.download;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.CancellationSignal;
 import android.os.Environment;
-import android.util.Size;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -51,7 +40,7 @@ public class FileUtils {
         ArrayList<Drawable> thumbnails = getThumbnails(context, videos);
 
         for (int i = 0; i < videos.size(); ++i) {
-            datas.add(new VideoData(thumbnails.get(i), videos.get(i).getName()));
+            datas.add(new VideoData(videos.get(i), thumbnails.get(i), videos.get(i).getName()));
         }
 
         return datas;

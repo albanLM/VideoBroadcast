@@ -1,6 +1,5 @@
 package com.example.videobroadcast.download;
 
-import android.media.session.MediaController;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.videobroadcast.R;
+import com.example.videobroadcast.SelectionViewModel;
 
 import java.util.List;
 
 public class VideoRecyclerView extends RecyclerView.Adapter<VideoRecyclerView.ViewHolder> {
     private List<VideoData> videos;
+    private SelectionViewModel viewModel;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public View layout;
@@ -30,8 +31,9 @@ public class VideoRecyclerView extends RecyclerView.Adapter<VideoRecyclerView.Vi
         }
     }
 
-    public VideoRecyclerView(List<VideoData> videos) {
+    public VideoRecyclerView(List<VideoData> videos, SelectionViewModel viewModel) {
         this.videos = videos;
+        this.viewModel = viewModel;
     }
 
     public void add(int position, VideoData video) {
@@ -65,7 +67,7 @@ public class VideoRecyclerView extends RecyclerView.Adapter<VideoRecyclerView.Vi
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                viewModel.setSelectedFile(video.getFile());
             }
         });
     }

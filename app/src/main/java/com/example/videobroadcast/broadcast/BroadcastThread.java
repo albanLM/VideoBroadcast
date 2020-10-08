@@ -3,6 +3,7 @@ package com.example.videobroadcast.broadcast;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.os.Environment;
 import android.os.FileUtils;
 import android.util.Log;
@@ -15,24 +16,40 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-public class ThreadUtils extends Thread {
-    private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    private File videoFile;
+import static androidx.core.app.ActivityCompat.startActivityForResult;
 
-    private static final String APP_NAME = "BTChat";
-    private  final UUID MY_UUID=UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-    OutputStream mmOutStream = null;
-
-
+public class BroadcastThread extends Thread {
+    private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private final BluetoothServerSocket mmServerSocket;
+    private final UUID MY_UUID=UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+    private File videoFile;
+    private String appName;
+    private OutputStream mmOutStream = null;
+
     private static final String TAG="SERVER SOCKET: ";
-    public ThreadUtils() {
+
+    public BroadcastThread(File video, String appName) {
+        if (bluetoothAdapter == null) {
+            // Device doesn't support Bluetooth
+            System.out.println("This device doesn't support bluetooth");
+        }
+
+        //request user to enable bluetooth if bluetooth is disabled without quitting the app
+
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+        this.videoFile = video;
+        this.appName = appName;
+
         // Use a temporary object that is later assigned to mmServerSocket
         // because mmServerSocket is final.
         BluetoothServerSocket tmp = null;
         try {
             // MY_UUID is the app's UUID string, also used by the client code.
-            tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord(APP_NAME, MY_UUID);
+            tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord(appName, MY_UUID);
         } catch (IOException e) {
             Log.e(TAG, "Socket's listen() method failed", e);
         }
@@ -84,52 +101,15 @@ public class ThreadUtils extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-            /*try {
-
-
-                int size = 1024;
-                String example = "A String";
-                byte[] bytes = example.getBytes();
-                mmOutStream.write(bytes);
-                mmOutStream.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
 
         try {
-            String rootDir = Environment.getExternalStorageDirectory()
+            /*String rootDir = Environment.getExternalStorageDirectory()
                     + File.separator + "Video";
             File rootFile = new File(rootDir);
-            rootFile.mkdir();
+            rootFile.mkdir();*/
 
 
-            //File localFile = new File(rootFile, ServerActivity.OUTPUT_FILE_NAME);
-                /*File localFile = new File(Environment.getExternalStorageDirectory()
-                        + File.separator + "Video/" + OUTPUT_FILE_NAME);
-                int size = (int) localFile.length();
-                if (size == 0) {
-                    System.out.println("File is empty ...");
-                    Log.d("DEBUG FILE", "EMPTY");
-                } else {
-                    System.out.println("File is not empty ...");
-                    Log.d("DEBUG FILE", "NOT EMPTY");
-                }*/
-            byte[] bytes = getByte(Environment.getExternalStorageDirectory()
-                    + File.separator + "Video/" + OUTPUT_FILE_NAME);
-
-            //String s = new String(bytes);
-            //System.out.println(s);
-            //Log.d("DEBUG", s);
-
-                /*try {
-                    BufferedInputStream buf = new BufferedInputStream(new FileInputStream(localFile));
-                    buf.read(bytes, 0, bytes.length);
-                    System.out.println(bytes);
-                    buf.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
+            byte[] bytes = getByte(videoFile.getAbsolutePath());
 
             try {
                 mmOutStream.write(bytes);

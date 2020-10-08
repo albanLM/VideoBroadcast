@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.videobroadcast.download.SelectionViewModel" />
+            type="com.example.videobroadcast.SelectionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -9,13 +9,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.videobroadcast.R;
+import com.example.videobroadcast.broadcast.BroadcastFragment;
 import com.example.videobroadcast.download.DownloadFragment;
+import com.example.videobroadcast.stream.StreamFragment;
+
+import java.util.ArrayList;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private ArrayList<Fragment> pages = new ArrayList<>();
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_download, R.string.tab_broadcast, R.string.tab_stream};
@@ -24,13 +29,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
+        pages.add(new DownloadFragment());
+        pages.add(new BroadcastFragment());
+        pages.add(new StreamFragment());
     }
 
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        return new DownloadFragment();
+        return pages.get(position);
     }
 
     @Nullable
@@ -41,7 +48,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 2 total pages.
-        return 3;
+        return pages.size();
     }
 }

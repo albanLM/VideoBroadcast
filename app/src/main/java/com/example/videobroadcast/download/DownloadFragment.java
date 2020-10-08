@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.videobroadcast.R;
+import com.example.videobroadcast.SelectionViewModel;
 import com.example.videobroadcast.databinding.FragmentDownloadBinding;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.yausername.youtubedl_android.YoutubeDLException;
@@ -35,7 +36,7 @@ public class DownloadFragment extends Fragment implements AddVideoDialog.AddVide
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        selectionViewModel = new ViewModelProvider(this).get(SelectionViewModel.class);
+        selectionViewModel = new ViewModelProvider(requireActivity()).get(SelectionViewModel.class);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class DownloadFragment extends Fragment implements AddVideoDialog.AddVide
         ArrayList<File> files = FileUtils.scanForVideos(getString(R.string.video_directory));
         ArrayList<VideoData> videos = FileUtils.getVideoDatas(getContext(), files);
 
-        adapter = new VideoRecyclerView(videos);
+        adapter = new VideoRecyclerView(videos, selectionViewModel);
         recyclerView.setAdapter(adapter);
     }
 

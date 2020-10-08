@@ -7,49 +7,47 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.videobroadcast.R;
+import com.example.videobroadcast.SelectionViewModel;
 import com.example.videobroadcast.databinding.FragmentBroadcastBinding;
-import com.example.videobroadcast.databinding.FragmentDownloadBinding;
 
 public class BroadcastFragment extends Fragment {
+    private SelectionViewModel selectionViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        selectionViewModel = new ViewModelProvider(requireActivity()).get(SelectionViewModel.class);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentBroadcastBinding binding = FragmentBroadcastBinding.inflate(inflater, container, false);
 
-        String aDiscoverable = BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE;
-        startActivityForResult(new Intent(aDiscoverable), 1);
+        selectionViewModel.getSelectedFile().observe(getViewLifecycleOwner(), file -> {
+            binding.testView.setText(file.getName());
+        });
 
-        final Button button = binding.bluetoothButton;
+        // Add button onClick() method
+        final Button button = binding.bluetoothSearchButton;
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                String aDiscoverable = BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE;
+                startActivityForResult(new Intent(aDiscoverable), 1);
 
-                if (bluetoothAdapter == null) {
-
-                    // Device doesn't support Bluetooth
-                    System.out.println("This device doesn't support bluetooth");
-                }
-
-                //request user to enable blutotooh if blutooth is disabled without quitting the app
-
-                if (!bluetoothAdapter.isEnabled()) {
-                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-                }
                 // Code here executes on main thread after user presses button
-                AcceptThread cth = new AcceptThread();
+                BroadcastThread cth = new BroadcastThread(selectionViewModel.getSelectedFile().getValue(), getString(R.string.app_name));
                 cth.start();
             }
         });
 
-        return null;
+        return binding.getRoot();
     }
-
 }

@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
 
+        viewPager.setOffscreenPageLimit(sectionsPagerAdapter.getCount());
+
+        binding.setLifecycleOwner(this);
+
         askPermissions();
     }
 
