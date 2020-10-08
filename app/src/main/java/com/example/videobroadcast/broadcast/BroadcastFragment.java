@@ -36,14 +36,14 @@ public class BroadcastFragment extends Fragment {
         });
 
         // Add button onClick() method
-        final Button button = binding.bluetoothSearchButton;
+        final Button button = binding.bluetoothBroadcastButton;
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String aDiscoverable = BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE;
                 startActivityForResult(new Intent(aDiscoverable), 1);
 
                 // Code here executes on main thread after user presses button
-                BroadcastThread cth = new BroadcastThread(selectionViewModel.getSelectedFile().getValue(), getString(R.string.app_name));
+                BroadcastThread cth = new BroadcastThread(getContext(), getActivity(), selectionViewModel.getSelectedFile().getValue());
                 cth.start();
             }
         });

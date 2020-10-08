@@ -1,12 +1,17 @@
 package com.example.videobroadcast.broadcast;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileUtils;
 import android.util.Log;
+
+import com.example.videobroadcast.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +33,7 @@ public class BroadcastThread extends Thread {
 
     private static final String TAG="SERVER SOCKET: ";
 
-    public BroadcastThread(File video, String appName) {
+    public BroadcastThread(Context context, Activity activity, File video) {
         if (bluetoothAdapter == null) {
             // Device doesn't support Bluetooth
             System.out.println("This device doesn't support bluetooth");
@@ -38,11 +43,11 @@ public class BroadcastThread extends Thread {
 
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            startActivityForResult(activity, enableBtIntent, 1, null);
         }
 
         this.videoFile = video;
-        this.appName = appName;
+        this.appName = context.getString(R.string.app_name);
 
         // Use a temporary object that is later assigned to mmServerSocket
         // because mmServerSocket is final.
