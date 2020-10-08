@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.videobroadcast.R;
 import com.example.videobroadcast.SelectionViewModel;
 import com.example.videobroadcast.databinding.FragmentBroadcastBinding;
 
@@ -31,8 +30,9 @@ public class BroadcastFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentBroadcastBinding binding = FragmentBroadcastBinding.inflate(inflater, container, false);
 
-        selectionViewModel.getSelectedFile().observe(getViewLifecycleOwner(), file -> {
-            binding.testView.setText(file.getName());
+        selectionViewModel.getSelectedVideo().observe(getViewLifecycleOwner(), videoData -> {
+            binding.title.setText(videoData.getTitle());
+            binding.thumbnail.setImageDrawable(videoData.getThumbnail());
         });
 
         // Add button onClick() method
@@ -43,7 +43,7 @@ public class BroadcastFragment extends Fragment {
                 startActivityForResult(new Intent(aDiscoverable), 1);
 
                 // Code here executes on main thread after user presses button
-                BroadcastThread cth = new BroadcastThread(getContext(), getActivity(), selectionViewModel.getSelectedFile().getValue());
+                BroadcastThread cth = new BroadcastThread(getContext(), getActivity(), selectionViewModel.getSelectedVideo().getValue().getFile());
                 cth.start();
             }
         });

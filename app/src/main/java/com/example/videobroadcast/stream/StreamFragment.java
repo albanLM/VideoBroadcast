@@ -70,8 +70,10 @@ public class StreamFragment extends Fragment {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 //if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                 Log.d("Client", "Found a device: " + device.getName());
-                itemsAdapter.add(device.getName() + "\n" + device.getAddress());
-                discoveredList.add(device);
+                if (device.getName() != null) {
+                    itemsAdapter.add(device.getName() + "\n" + device.getAddress());
+                    discoveredList.add(device);
+                }
                 //}
 
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {

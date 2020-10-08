@@ -67,7 +67,7 @@ public class VideoRecyclerView extends RecyclerView.Adapter<VideoRecyclerView.Vi
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setSelectedFile(video.getFile());
+                viewModel.setSelectedVideo(video);
             }
         });
     }

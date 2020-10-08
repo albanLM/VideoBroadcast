@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.io.File;
+import com.example.videobroadcast.download.VideoData;
 
 public class SelectionViewModel extends ViewModel {
-    private MutableLiveData<File> selectedFile = new MutableLiveData<>();
+    private MutableLiveData<VideoData> selectedVideo = new MutableLiveData<>();
 
-    public LiveData<File> getSelectedFile() {
-        return selectedFile;
+    public LiveData<VideoData> getSelectedVideo() {
+        return selectedVideo;
     }
 
-    public void setSelectedFile(File selectedFile) {
-        this.selectedFile.setValue(selectedFile);
+    public void setSelectedVideo(VideoData selectedVideo) {
+        this.selectedVideo.setValue(selectedVideo);
     }
 }
